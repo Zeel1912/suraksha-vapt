@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SURAKSHA VAPT - Sign Up</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SURAKSHA VAPT</h1>
+        <div class="card">
+            <h2>Create Account</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <form action="/signup" method="POST">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Choose a username" required>
+                
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Min 6 characters" required>
+                
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" placeholder="Re-enter password" required>
+                
+                <button type="submit">Sign Up</button>
+            </form>
+            <p class="form-footer">Already have an account? <a href="/login">Login here</a></p>
+        </div>
+    </div>
+</body>
+</html>

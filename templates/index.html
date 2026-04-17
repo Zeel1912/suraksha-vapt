@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SURAKSHA VAPT - Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>SURAKSHA VAPT</h1>
+            <p>Professional Vulnerability Assessment & Penetration Testing Toolkit</p>
+            <nav class="topnav">
+                <a href="/">Dashboard</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h2>Welcome back, {{ user }}! 👋</h2>
+            <p>Ready to explore cybersecurity concepts through hands-on learning? Choose a module below to start your security journey.</p>
+
+            <div class="educational-card">
+                <h3>🎓 Learning Path</h3>
+                <p>Begin with the <strong>Learning Module</strong> to understand attack vectors, then practice with <strong>Vulnerability Scanning</strong>, and finally challenge yourself with <strong>Penetration Testing</strong>.</p>
+            </div>
+
+            <div class="modules-buttons">
+                <a href="/learning" class="module-btn learn-btn">
+                    <span class="icon">📚</span>
+                    <span class="btn-title">Learning Module</span>
+                    <span class="btn-desc">Master cybersecurity fundamentals with interactive guides, examples, and quizzes</span>
+                </a>
+                <a href="/vulnscan" class="module-btn vuln-btn">
+                    <span class="icon">🔍</span>
+                    <span class="btn-title">Vulnerability Scanning</span>
+                    <span class="btn-desc">Discover and analyze security weaknesses in web applications safely</span>
+                </a>
+                <a href="/pentest" class="module-btn pentest-btn">
+                    <span class="icon">⚔️</span>
+                    <span class="btn-title">Penetration Testing</span>
+                    <span class="btn-desc">Simulate real-world attacks to test your defenses and learn mitigation strategies</span>
+                </a>
+            </div>
+        </section>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

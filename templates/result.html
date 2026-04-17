@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Scan Result</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Scan Result</h1>
+            <nav class="topnav">
+                <a href="/">Dashboard</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
+
+        <div class="result-box">
+            <h2>📊 Assessment Report</h2>
+
+            <div class="educational-card">
+                <h3>🎯 Scan Summary</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <strong style="color: #38bdf8;">Target:</strong><br>{{ target }}
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <strong style="color: #38bdf8;">Scan Type:</strong><br>{{ scan_type }}
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <strong style="color: #38bdf8;">Attack Vector:</strong><br>{{ attack }}
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <strong style="color: #38bdf8;">Risk Level:</strong><br><span class="severity {{ severity.lower() }}">{{ severity }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🧠 Process Understanding</h3>
+            <div class="educational-card">
+                <p>{{ process_info }}</p>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: #38bdf8; font-weight: bold;">💡 What does this mean for learning?</summary>
+                    <p style="margin-top: 1rem;">This section explains the technical details of how the vulnerability works. Understanding these mechanics helps you:</p>
+                    <ul>
+                        <li>Recognize similar patterns in other applications</li>
+                        <li>Develop secure coding practices</li>
+                        <li>Explain vulnerabilities to other developers</li>
+                        <li>Design better security architectures</li>
+                    </ul>
+                </details>
+            </div>
+
+            {% if result and result.status %}
+            <!-- Enhanced structured results display -->
+            <h3>🔍 Professional Assessment Results</h3>
+            <div class="educational-card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <strong style="color: #38bdf8;">Assessment Status:</strong><br>{{ result.status }}
+                    </div>
+                    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <strong style="color: #38bdf8;">Risk Level:</strong><br>
+                        <span class="severity {{ result.risk_level.lower() if result.risk_level else 'info' }}">{{ result.risk_level if result.risk_level else 'Unknown' }}</span>
+                    </div>
+                    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <strong style="color: #38bdf8;">Vulnerability:</strong><br>{{ result.vulnerability if result.vulnerability else attack }}
+                    </div>
+                </div>
+
+                {% if result.findings %}
+                <h4>🔎 Key Findings</h4>
+                <ul style="margin-bottom: 1rem;">
+                    {% for finding in result.findings %}
+                    <li>{{ finding }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                {% if result.educational_notes %}
+                <h4>🎓 Educational Insights</h4>
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    {% for note in result.educational_notes %}
+                    <p style="margin: 0.5rem 0;">• {{ note }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if result.recommendations %}
+                <h4>🛡️ Mitigation Recommendations</h4>
+                <div style="background: rgba(34, 197, 94, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    {% for rec in result.recommendations %}
+                    <p style="margin: 0.5rem 0;">• {{ rec }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if result.details %}
+                <h4>🔧 Technical Details</h4>
+                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    {% if result.details is iterable and result.details is not string %}
+                    {% for item in result.details %}
+                    <div style="margin-bottom: 1rem; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px;">
+                        {% if item is mapping %}
+                        {% for key, value in item.items() %}
+                        <strong>{{ key|title }}:</strong>
+                        {% if value is iterable and value is not string %}
+                        <ul style="margin: 0.5rem 0; padding-left: 1rem;">
+                            {% for subitem in value %}
+                            <li>{{ subitem }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        {{ value }}<br>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        {{ item }}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <pre style="white-space: pre-wrap;">{{ result.details }}</pre>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <h3>📋 Generated Report</h3>
+            <div class="output-box">
+                <pre>{{ report | tojson(indent=2) }}</pre>
+            </div>
+            <small style="color: #94a3b8;">📊 Structured report data - use this for documentation and compliance</small>
+
+            <div class="educational-card" style="margin-top: 2rem;">
+                <h3>🎓 Learning Takeaways</h3>
+                <ul>
+                    <li><strong>What was tested:</strong> {{ attack }} vulnerability assessment</li>
+                    <li><strong>Why it matters:</strong> Understanding this attack helps prevent real-world breaches</li>
+                    <li><strong>Next steps:</strong> Apply the mitigation strategies and re-test</li>
+                    <li><strong>Documentation:</strong> Download the PDF report for your learning portfolio</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="/download_report" class="btn-link"><button>Download PDF Report</button></a>
+            <a href="/" class="btn-link"><button>Back to Dashboard</button></a>
+        </div>
+    </div>
+</body>
+</html>

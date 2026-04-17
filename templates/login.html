@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SURAKSHA VAPT - Login</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SURAKSHA VAPT</h1>
+        <div class="card">
+            <h2>Login to VAPT Dashboard</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <form action="/login" method="POST">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="admin" required>
+                <label>Password</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+                <button type="submit">Login</button>
+            </form>
+           <p class="form-footer">Don't have an account? <a href="/signup">Sign up here</a></p>
+           <p class="hint">Demo credentials: <strong>admin/Admin@123</strong> or <strong>pentester/Pentest@2026</strong></p>
+        </div>
+    </div>
+</body>
+</html>

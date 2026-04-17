@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Learning Module</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Learning Module - VAPT Essentials</h1>
+            <nav class="topnav">
+                <a href="/">Dashboard</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
+
+        <div class="card">
+            <h2>🎓 Understanding Attack Vectors</h2>
+            <p>This comprehensive guide covers all supported attack types in our platform. Learn why each vulnerability matters, how to identify them, and most importantly, how to prevent them. Each section includes real-world examples and practical mitigation strategies.</p>
+
+            <div class="educational-card">
+                <h3>📖 How to Use This Guide</h3>
+                <ul>
+                    <li><strong>Attack Type:</strong> The name and category of the vulnerability</li>
+                    <li><strong>Objective:</strong> What the attacker aims to achieve</li>
+                    <li><strong>Identification:</strong> How to spot this vulnerability in scan results</li>
+                    <li><strong>Mitigation:</strong> Step-by-step prevention and fixing strategies</li>
+                </ul>
+                <p>💡 <em>Pro tip: Start with vulnerability scanning to practice detection, then move to penetration testing for exploitation techniques.</em></p>
+            </div>
+
+            <table class="learning-table">
+                <thead>
+                    <tr>
+                        <th>Attack Type</th>
+                        <th>Objective</th>
+                        <th>How to Identify</th>
+                        <th>Mitigation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if topics %}
+                    {% for item in topics %}
+                    <tr>
+                        <td>
+                            <span class="attack-type-badge attack-{{ item.severity|lower|default('medium') }}">{{ item.attack }}</span>
+                            <br><small style="color: #94a3b8;">{{ item.category|default('Web Security') }}</small>
+                        </td>
+                        <td>{{ item.objective }}</td>
+                        <td>
+                            Run the scan from the Vulnerability or Penetration module, review output for:
+                            <ul style="margin-top: 0.5rem;">
+                                <li>Successful payload execution</li>
+                                <li>Error messages indicating vulnerabilities</li>
+                                <li>Unauthorized access patterns</li>
+                                <li>Unexpected application behavior</li>
+                            </ul>
+                        </td>
+                        <td>{{ item.mitigation }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #94a3b8; padding: 3rem;">
+                            <span style="font-size: 3rem;">📚</span><br><br>
+                            No attack vectors available yet. Check back after running some scans!
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+            <div class="workflow-steps">
+                <h3>🚀 Complete Learning Workflow</h3>
+                <ol>
+                    <li><strong>Study the Theory:</strong> Read about each attack type in this learning module to understand the concepts</li>
+                    <li><strong>Practice Detection:</strong> Use Vulnerability Scanning to identify weaknesses in test applications</li>
+                    <li><strong>Learn Exploitation:</strong> Try Penetration Testing to see how attacks work in practice</li>
+                    <li><strong>Analyze Results:</strong> Review scan outputs and understand what each finding means</li>
+                    <li><strong>Apply Fixes:</strong> Implement the mitigation strategies provided in the results</li>
+                    <li><strong>Verify Solutions:</strong> Re-run scans to confirm vulnerabilities are resolved</li>
+                    <li><strong>Document Everything:</strong> Download PDF reports for your learning portfolio</li>
+                </ol>
+            </div>
+
+            <div class="educational-card">
+                <h3>🎯 Learning Objectives</h3>
+                <p>By the end of your journey with SURAKSHA VAPT, you should be able to:</p>
+                <ul>
+                    <li>Identify common web application vulnerabilities</li>
+                    <li>Understand attacker motivations and techniques</li>
+                    <li>Implement security best practices in your own applications</li>
+                    <li>Interpret security scan results and prioritize fixes</li>
+                    <li>Communicate security findings to stakeholders</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

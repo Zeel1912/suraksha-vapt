@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vulnerability Scanning</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Vulnerability Scanning Module</h1>
+            <nav class="topnav">
+                <a href="/">Dashboard</a>
+                <a href="/pentest">Penetration Test</a>
+                <a href="/learning">Learning Module</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </header>
+
+        <div class="card">
+            <h2>🔍 Vulnerability Scanning Module</h2>
+            <p>Discover security weaknesses in web applications through automated scanning. This module helps you identify vulnerabilities without exploiting them, making it safe for learning and testing.</p>
+
+            <div class="educational-card">
+                <h3>📋 What You'll Learn</h3>
+                <ul>
+                    <li>How to identify common web vulnerabilities</li>
+                    <li>Understanding vulnerability severity levels</li>
+                    <li>Reading and interpreting scan results</li>
+                    <li>Best practices for secure web development</li>
+                </ul>
+            </div>
+
+            <form action="/scan" method="POST" class="card" style="margin-top: 2rem;">
+                <input type="hidden" name="module" value="vulnerability">
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem;">Target URL</label>
+                    <input type="url" name="target" placeholder="http://example.com" required style="width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #f8fafc;">
+                    <small style="color: #94a3b8; display: block; margin-top: 0.5rem;">💡 Use test applications like DVWA, WebGoat, or your own development server</small>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem;">Select Attack Type</label>
+                    <select name="attack" style="width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #f8fafc;">
+                        <option value="sqli">🗄️ SQL Injection - Database manipulation attacks</option>
+                        <option value="xss">💉 Cross Site Scripting - Client-side code injection</option>
+                        <option value="dir">📁 Directory Traversal - File system access</option>
+                        <option value="misconfig">⚙️ Security Misconfiguration - Improper security settings</option>
+                        <option value="outdated">📅 Outdated Software - Known vulnerabilities in old versions</option>
+                        <option value="sensitive">🔓 Sensitive Data Exposure - Information leakage</option>
+                        <option value="headers">🛡️ Security Headers - Missing protective headers</option>
+                    </select>
+                    <small style="color: #94a3b8; display: block; margin-top: 0.5rem;">🎓 Each scan type teaches different security concepts and mitigation techniques</small>
+                </div>
+
+                <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%); border: none; border-radius: 8px; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease;">🚀 Start Vulnerability Scan</button>
+            </form>
+
+            <div class="educational-card" style="margin-top: 2rem;">
+                <h3>🧪 Safe Testing Environment</h3>
+                <p><strong>Remember:</strong> Only scan applications you own or have explicit permission to test. Use legal testing environments like:</p>
+                <ul>
+                    <li><a href="https://dvwa.co.uk/" target="_blank" style="color: #38bdf8;">DVWA (Damn Vulnerable Web Application)</a></li>
+                    <li><a href="https://owasp.org/www-project-webgoat/" target="_blank" style="color: #38bdf8;">OWASP WebGoat</a></li>
+                    <li><a href="https://owasp.org/www-project-juice-shop/" target="_blank" style="color: #38bdf8;">OWASP Juice Shop</a></li>
+                    <li>Your own development/test servers</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
