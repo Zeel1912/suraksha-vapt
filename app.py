@@ -3,6 +3,8 @@ from io import BytesIO
 from core_engine.scan_orchestrator import ScanOrchestrator
 from reporting.report_generator import generate_report, generate_report_pdf
 from reporting.severity_analyzer import analyze_severity
+import subprocess
+import os
 
 app = Flask(__name__)
 app.secret_key = "change_this_secret_in_production"
@@ -14,6 +16,9 @@ VALID_USERS = {
     "admin": "Admin@123",
     "pentester": "Pentest@2026"
 }
+
+# Sandbox server process
+sandbox_process = None
 
 
 def validate_signup_input(username, password, confirm_password):
@@ -241,6 +246,63 @@ def download_report():
     filename = f"SURAKSHA_VAPT_{report['attack']}_{timestamp}.pdf"
 
     return send_file(BytesIO(pdf_bytes), as_attachment=True, download_name=filename, mimetype="application/pdf")
+
+
+@app.route("/sandbox/start")
+@login_required
+def start_sandbox():
+    """Start the vulnerable test environment"""
+    global sandbox_process
+
+    try:
+        if sandbox_process is None or sandbox_process.poll() is not None:
+            # Start the vulnerable app server
+            vulnerable_app_dir = os.path.join(os.path.dirname(__file__), "vulnerable_app")
+            sandbox_process = subprocess.Popen(
+                ["python3", "server.py"],
+                cwd=vulnerable_app_dir,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+            flash("🎯 Sandbox environment started! Access at http://localhost:8080", "success")
+        else:
+            flash("⚠️ Sandbox environment is already running", "warning")
+    except Exception as e:
+        flash(f"❌ Failed to start sandbox: {str(e)}", "danger")
+
+    return redirect(url_for("home"))
+
+
+@app.route("/sandbox/stop")
+@login_required
+def stop_sandbox():
+    """Stop the vulnerable test environment"""
+    global sandbox_process
+
+    try:
+        if sandbox_process and sandbox_process.poll() is None:
+            sandbox_process.terminate()
+            sandbox_process.wait(timeout=5)
+            sandbox_process = None
+            flash("🛑 Sandbox environment stopped", "info")
+        else:
+            flash("⚠️ Sandbox environment is not running", "warning")
+    except Exception as e:
+        flash(f"❌ Failed to stop sandbox: {str(e)}", "danger")
+
+    return redirect(url_for("home"))
+
+
+@app.route("/sandbox/status")
+@login_required
+def sandbox_status():
+    """Check sandbox status"""
+    global sandbox_process
+
+    if sandbox_process and sandbox_process.poll() is None:
+        return {"status": "running", "url": "http://localhost:8080"}
+    else:
+        return {"status": "stopped"}
 
 
 if __name__ == "__main__":
