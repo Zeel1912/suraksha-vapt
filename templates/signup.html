@@ -5,11 +5,16 @@
     <title>SURAKSHA VAPT - Sign Up</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>SURAKSHA VAPT</h1>
-        <div class="card">
+<body class="auth-body">
+    <div class="container auth-container">
+        <header class="auth-header">
+            <div class="brand-chip">SURAKSHA</div>
+            <h1>Join the VAPT Community</h1>
+            <p class="auth-subtitle">Create your account and start learning modern penetration testing and secure coding at university pace.</p>
+        </header>
+        <div class="card auth-card">
             <h2>Create Account</h2>
+            <p class="card-intro">Register your student account to access practice labs, scan reports, and guided lessons.</p>
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}

@@ -38,6 +38,9 @@ htmlcov/
 # Environment variables and secrets
 .env
 .env.*
+config.py
+secrets.py
+credentials.json
 
 # Logs and temporary files
 *.log
@@ -47,3 +50,37 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Flask specific
+instance/
+.webassets-cache
+*.sqlite
+*.db
+
+# Security and VAPT specific
+reports/
+scans/
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*password*
+*secret*
+*token*
+
+# Temporary scan results
+temp/
+cache/
+*.cache
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Node modules (if any frontend tools used)
+node_modules/
+
+# PDF reports (generated files)
+*.pdf

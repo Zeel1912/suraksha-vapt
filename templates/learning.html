@@ -4,97 +4,357 @@
     <meta charset="utf-8">
     <title>Learning Module</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .attack-card {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .attack-card:nth-child(1) { animation-delay: 0.1s; }
+        .attack-card:nth-child(2) { animation-delay: 0.2s; }
+        .attack-card:nth-child(3) { animation-delay: 0.3s; }
+        .attack-card:nth-child(4) { animation-delay: 0.4s; }
+        .attack-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .attack-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
+        }
+
+        .attack-card.expanded {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+        }
+
+        .attack-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .attack-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #38bdf8;
+            margin: 0;
+        }
+
+        .attack-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .expand-btn {
+            background: rgba(56, 189, 248, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .expand-btn:hover {
+            background: rgba(56, 189, 248, 0.4);
+            transform: scale(1.1);
+        }
+
+        .attack-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .attack-content.expanded {
+            max-height: 500px;
+        }
+
+        .fun-fact {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #f59e0b;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: rgba(251, 191, 36, 0.2);
+        }
+
+        .quiz-option.correct {
+            background: rgba(34, 197, 94, 0.3);
+            border-color: #22c55e;
+        }
+
+        .quiz-option.wrong {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #38bdf8, #a855f7);
+            height: 100%;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .achievement {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.5rem;
+            font-weight: bold;
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Learning Module - VAPT Essentials</h1>
+    <div class="container learning-page">
+        <header class="header learning-header">
+            <div>
+                <h1>🎓 Learning Module - VAPT Essentials</h1>
+                <p class="auth-subtitle">Dive into the exciting world of cybersecurity! Learn about attack vectors with interactive cards, fun facts, and quizzes. 🚀</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
             <nav class="topnav">
-                <a href="/">Dashboard</a>
-                <a href="/logout">Logout</a>
+                <a href="/">🏠 Dashboard</a>
+                <a href="/logout">🚪 Logout</a>
             </nav>
         </header>
 
-        <div class="card">
-            <h2>🎓 Understanding Attack Vectors</h2>
-            <p>This comprehensive guide covers all supported attack types in our platform. Learn why each vulnerability matters, how to identify them, and most importantly, how to prevent them. Each section includes real-world examples and practical mitigation strategies.</p>
+        <div class="card learning-card">
+            <h2>🎯 Welcome to Your Cybersecurity Adventure!</h2>
+            <p>Ready to become a security superhero? 🦸‍♂️ This interactive guide will teach you about real attack types, how to spot them, and how to defend against them. Click on each attack card to reveal more details!</p>
 
             <div class="educational-card">
-                <h3>📖 How to Use This Guide</h3>
+                <h3>📖 Your Learning Journey</h3>
                 <ul>
-                    <li><strong>Attack Type:</strong> The name and category of the vulnerability</li>
-                    <li><strong>Objective:</strong> What the attacker aims to achieve</li>
-                    <li><strong>Identification:</strong> How to spot this vulnerability in scan results</li>
-                    <li><strong>Mitigation:</strong> Step-by-step prevention and fixing strategies</li>
+                    <li><strong>🔍 Attack Type:</strong> The name and category of the vulnerability</li>
+                    <li><strong>🎯 Objective:</strong> What the attacker aims to achieve</li>
+                    <li><strong>🕵️ Identification:</strong> How to spot this vulnerability in scan results</li>
+                    <li><strong>🛡️ Mitigation:</strong> Step-by-step prevention and fixing strategies</li>
                 </ul>
                 <p>💡 <em>Pro tip: Start with vulnerability scanning to practice detection, then move to penetration testing for exploitation techniques.</em></p>
             </div>
 
-            <table class="learning-table">
-                <thead>
-                    <tr>
-                        <th>Attack Type</th>
-                        <th>Objective</th>
-                        <th>How to Identify</th>
-                        <th>Mitigation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% if topics %}
-                    {% for item in topics %}
-                    <tr>
-                        <td>
-                            <span class="attack-type-badge attack-{{ item.severity|lower|default('medium') }}">{{ item.attack }}</span>
-                            <br><small style="color: #94a3b8;">{{ item.category|default('Web Security') }}</small>
-                        </td>
-                        <td>{{ item.objective }}</td>
-                        <td>
-                            Run the scan from the Vulnerability or Penetration module, review output for:
-                            <ul style="margin-top: 0.5rem;">
-                                <li>Successful payload execution</li>
-                                <li>Error messages indicating vulnerabilities</li>
-                                <li>Unauthorized access patterns</li>
-                                <li>Unexpected application behavior</li>
-                            </ul>
-                        </td>
-                        <td>{{ item.mitigation }}</td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="4" style="text-align: center; color: #94a3b8; padding: 3rem;">
-                            <span style="font-size: 3rem;">📚</span><br><br>
-                            No attack vectors available yet. Check back after running some scans!
-                        </td>
-                    </tr>
-                {% endif %}
-                </tbody>
-            </table>
+            {% if topics %}
+                {% for item in topics %}
+                <div class="attack-card" onclick="toggleCard(this)">
+                    <div class="attack-header">
+                        <div style="display: flex; align-items: center;">
+                            <span class="attack-icon">
+                                {% if item.attack == "SQL Injection" %}💉{% elif item.attack == "XSS" %}🎭{% elif item.attack == "Directory Traversal" %}📁{% elif item.attack == "CSRF" %}🔄{% elif item.attack == "Brute Force" %}🔨{% elif item.attack == "Broken Auth" %}🔓{% elif item.attack == "Insecure Cookies" %}🍪{% elif item.attack == "SSL/TLS" %}🔒{% elif item.attack == "Misconfig" %}⚙️{% elif item.attack == "Outdated Software" %}📅{% else %}⚠️{% endif %}
+                            </span>
+                            <div>
+                                <h3 class="attack-title">{{ item.attack }}</h3>
+                                <small style="color: #94a3b8;">Web Security</small>
+                            </div>
+                        </div>
+                        <button class="expand-btn" onclick="event.stopPropagation()">▼</button>
+                    </div>
+                    <div class="attack-content">
+                        <div class="fun-fact">
+                            <strong>🎯 Objective:</strong> {{ item.objective }}
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <strong>🕵️ How to Identify:</strong>
+                            <p style="margin-top: 0.5rem; color: #cbd5e1;">{{ item.identification }}</p>
+                        </div>
+                        <div class="fun-fact">
+                            <strong>🛡️ Mitigation:</strong> {{ item.mitigation }}
+                        </div>
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <button onclick="markLearned('{{ item.attack }}')" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">✅ I Learned This!</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; color: #94a3b8; padding: 3rem;">
+                    <span style="font-size: 3rem;">📚</span><br><br>
+                    No attack vectors available yet. Check back after running some scans!
+                </div>
+            {% endif %}
 
             <div class="workflow-steps">
                 <h3>🚀 Complete Learning Workflow</h3>
                 <ol>
-                    <li><strong>Study the Theory:</strong> Read about each attack type in this learning module to understand the concepts</li>
-                    <li><strong>Practice Detection:</strong> Use Vulnerability Scanning to identify weaknesses in test applications</li>
-                    <li><strong>Learn Exploitation:</strong> Try Penetration Testing to see how attacks work in practice</li>
-                    <li><strong>Analyze Results:</strong> Review scan outputs and understand what each finding means</li>
-                    <li><strong>Apply Fixes:</strong> Implement the mitigation strategies provided in the results</li>
-                    <li><strong>Verify Solutions:</strong> Re-run scans to confirm vulnerabilities are resolved</li>
-                    <li><strong>Document Everything:</strong> Download PDF reports for your learning portfolio</li>
+                    <li><strong>📚 Study the Theory:</strong> Read about each attack type in this learning module to understand the concepts</li>
+                    <li><strong>🔍 Practice Detection:</strong> Use Vulnerability Scanning to identify weaknesses in test applications</li>
+                    <li><strong>⚔️ Learn Exploitation:</strong> Try Penetration Testing to see how attacks work in practice</li>
+                    <li><strong>📊 Analyze Results:</strong> Review scan outputs and understand what each finding means</li>
+                    <li><strong>🔧 Apply Fixes:</strong> Implement the mitigation strategies provided in the results</li>
+                    <li><strong>✅ Verify Solutions:</strong> Re-run scans to confirm vulnerabilities are resolved</li>
+                    <li><strong>📄 Document Everything:</strong> Download PDF reports for your learning portfolio</li>
                 </ol>
+            </div>
+
+            <div class="quiz-section">
+                <h3>🧠 Quick Quiz Time!</h3>
+                <p>Test your knowledge with this fun quiz. Click the correct answer!</p>
+                <div class="quiz-question" id="quizQuestion">What does XSS stand for?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, 'wrong')">Extra Secure System</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'correct')">Cross Site Scripting</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'wrong')">XML Secure Service</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'wrong')">Extended Security Script</div>
+                </div>
+                <button onclick="nextQuestion()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; margin-top: 1rem;">Next Question 🎲</button>
             </div>
 
             <div class="educational-card">
                 <h3>🎯 Learning Objectives</h3>
                 <p>By the end of your journey with SURAKSHA VAPT, you should be able to:</p>
                 <ul>
-                    <li>Identify common web application vulnerabilities</li>
-                    <li>Understand attacker motivations and techniques</li>
-                    <li>Implement security best practices in your own applications</li>
-                    <li>Interpret security scan results and prioritize fixes</li>
-                    <li>Communicate security findings to stakeholders</li>
+                    <li>🔍 Identify common web application vulnerabilities</li>
+                    <li>🧠 Understand attacker motivations and techniques</li>
+                    <li>🛡️ Implement security best practices in your own applications</li>
+                    <li>📈 Interpret security scan results and prioritize fixes</li>
+                    <li>💬 Communicate security findings to stakeholders</li>
                 </ul>
+                <div id="achievements" style="text-align: center; margin-top: 1rem;"></div>
             </div>
+        </div>
+    </div>
+
+    <script>
+        let learnedAttacks = [];
+        let quizIndex = 0;
+        const quizQuestions = [
+            { question: "What does XSS stand for?", options: ["Extra Secure System", "Cross Site Scripting", "XML Secure Service", "Extended Security Script"], correct: 1 },
+            { question: "What is the main goal of SQL Injection?", options: ["Steal cookies", "Extract database data", "Crash the server", "Send spam emails"], correct: 1 },
+            { question: "Which of these is a good mitigation for CSRF?", options: ["Use HTTPS", "Anti-CSRF tokens", "Disable JavaScript", "Use weak passwords"], correct: 1 },
+            { question: "What does 'HttpOnly' flag do for cookies?", options: ["Makes them secure", "Prevents JavaScript access", "Encrypts the value", "Sets expiration"], correct: 1 }
+        ];
+
+        function toggleCard(card) {
+            const content = card.querySelector('.attack-content');
+            const btn = card.querySelector('.expand-btn');
+            content.classList.toggle('expanded');
+            card.classList.toggle('expanded');
+            btn.textContent = content.classList.contains('expanded') ? '▲' : '▼';
+            updateProgress();
+        }
+
+        function markLearned(attack) {
+            if (!learnedAttacks.includes(attack)) {
+                learnedAttacks.push(attack);
+                showAchievement("🎉 Learned about " + attack + "!");
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const totalCards = document.querySelectorAll('.attack-card').length;
+            const expandedCards = document.querySelectorAll('.attack-card.expanded').length;
+            const progress = (expandedCards / totalCards) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showAchievement(message) {
+            const achievements = document.getElementById('achievements');
+            const achievement = document.createElement('div');
+            achievement.className = 'achievement';
+            achievement.textContent = message;
+            achievements.appendChild(achievement);
+            setTimeout(() => achievement.remove(), 3000);
+        }
+
+        function checkAnswer(option, isCorrect) {
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt === option) {
+                    opt.classList.add(isCorrect);
+                }
+            });
+            if (isCorrect === 'correct') {
+                showAchievement("🎊 Correct! You're a security star!");
+            } else {
+                showAchievement("😅 Not quite! Keep learning!");
+            }
+        }
+
+        function nextQuestion() {
+            quizIndex = (quizIndex + 1) % quizQuestions.length;
+            const question = quizQuestions[quizIndex];
+            document.getElementById('quizQuestion').textContent = question.question;
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((opt, index) => {
+                opt.textContent = question.options[index];
+                opt.className = 'quiz-option';
+                opt.style.pointerEvents = 'auto';
+                opt.onclick = () => checkAnswer(opt, index === question.correct ? 'correct' : 'wrong');
+            });
+        }
+
+        // Initialize
+        nextQuestion();
+    </script>
+</body>
+</html>
         </div>
     </div>
 </body>

@@ -5,11 +5,16 @@
     <title>SURAKSHA VAPT - Login</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>SURAKSHA VAPT</h1>
-        <div class="card">
+<body class="auth-body">
+    <div class="container auth-container">
+        <header class="auth-header">
+            <div class="brand-chip">SURAKSHA</div>
+            <h1>Welcome Back</h1>
+            <p class="auth-subtitle">Continue your cybersecurity training with interactive scans, guided lessons, and professional reports.</p>
+        </header>
+        <div class="card auth-card">
             <h2>Login to VAPT Dashboard</h2>
+            <p class="card-intro">Enter your credentials to access the learning dashboard and run real security scans.</p>
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -19,13 +24,13 @@
             {% endwith %}
             <form action="/login" method="POST">
                 <label>Username</label>
-                <input type="text" name="username" placeholder="admin" required>
+                <input type="text" name="username" placeholder="Enter username" required>
                 <label>Password</label>
                 <input type="password" name="password" placeholder="••••••••" required>
                 <button type="submit">Login</button>
             </form>
            <p class="form-footer">Don't have an account? <a href="/signup">Sign up here</a></p>
-           <p class="hint">Demo credentials: <strong>admin/Admin@123</strong> or <strong>pentester/Pentest@2026</strong></p>
+           <p class="hint">Use your assigned credentials to access the VAPT dashboard. Contact the administrator for a demo account.</p>
         </div>
     </div>
 </body>

@@ -132,16 +132,66 @@ def pentest():
 @login_required
 def learning():
     topics = [
-        {"attack": "SQL Injection", "objective": "Extract data via malicious queries", "mitigation": "Use parameterized queries"},
-        {"attack": "XSS", "objective": "Execute scripts in client browser", "mitigation": "Escape output, enforce CSP"},
-        {"attack": "Directory Traversal", "objective": "Read restricted files", "mitigation": "Normalize paths, block .."},
-        {"attack": "CSRF", "objective": "Force unwanted authenticated actions", "mitigation": "Anti-CSRF tokens"},
-        {"attack": "Brute Force", "objective": "Guess credentials via loop attacks", "mitigation": "Rate limiting, lockouts"},
-        {"attack": "Broken Auth", "objective": "Exploit weak session/login logic", "mitigation": "Secure login flows"},
-        {"attack": "Insecure Cookies", "objective": "Hijack session tokens", "mitigation": "HttpOnly, Secure, SameSite"},
-        {"attack": "SSL/TLS", "objective": "Encrypt data in transit securely", "mitigation": "TLS1.2+, strong ciphers"},
-        {"attack": "Misconfig", "objective": "Find unsafe settings/defaults", "mitigation": "Harden config"},
-        {"attack": "Outdated Software", "objective": "Exploit known CVEs", "mitigation": "Update dependencies"},
+        {
+            "attack": "SQL Injection",
+            "objective": "Extract, modify, or delete database data by injecting malicious SQL code",
+            "identification": "Look for SQL syntax errors in responses, unexpected data leakage, or successful injection payloads like ' OR 1=1 --",
+            "mitigation": "Use parameterized queries/prepared statements, input validation, stored procedures, and ORM frameworks. Never concatenate user input directly into SQL queries."
+        },
+        {
+            "attack": "XSS",
+            "objective": "Execute malicious scripts in users' browsers to steal cookies, session tokens, or perform actions on behalf of users",
+            "identification": "Check if script payloads like <script>alert(1)</script> appear in page output, or if JavaScript executes when injected into forms/URLs",
+            "mitigation": "Escape all user input before outputting to HTML, use Content Security Policy (CSP), validate and sanitize input, use safe encoding functions"
+        },
+        {
+            "attack": "Directory Traversal",
+            "objective": "Access files and directories outside the web root by manipulating path traversal sequences",
+            "identification": "Monitor for payloads like ../../../etc/passwd or ..\\..\\windows\\system32\\config\\sam in file access attempts",
+            "mitigation": "Normalize all file paths, validate input against whitelist, use chroot/jails, avoid direct file system access, implement proper path validation"
+        },
+        {
+            "attack": "CSRF",
+            "objective": "Trick authenticated users into performing unwanted actions on web applications they're logged into",
+            "identification": "Check if state-changing operations can be performed via GET requests or without proper token validation",
+            "mitigation": "Implement anti-CSRF tokens in all forms, use SameSite cookie attribute, require re-authentication for sensitive operations, validate Origin/Referer headers"
+        },
+        {
+            "attack": "Brute Force",
+            "objective": "Systematically try all possible combinations of credentials until finding valid ones",
+            "identification": "Monitor for multiple failed login attempts from same IP, unusual login patterns, or successful logins with weak passwords",
+            "mitigation": "Implement account lockouts after failed attempts, use CAPTCHA, enforce strong password policies, implement rate limiting, use multi-factor authentication"
+        },
+        {
+            "attack": "Broken Authentication",
+            "objective": "Exploit flaws in authentication mechanisms to impersonate users or bypass login controls",
+            "identification": "Check for predictable session IDs, missing logout functionality, weak password recovery, or session fixation vulnerabilities",
+            "mitigation": "Use secure session management, implement proper logout, enforce password complexity, use secure password recovery, implement account lockouts"
+        },
+        {
+            "attack": "Insecure Cookies",
+            "objective": "Intercept or manipulate session cookies to hijack user sessions or steal sensitive information",
+            "identification": "Check cookie attributes (Secure, HttpOnly, SameSite), verify if cookies are transmitted over HTTP, test for cookie manipulation",
+            "mitigation": "Set Secure flag for HTTPS-only cookies, use HttpOnly to prevent JavaScript access, implement SameSite attribute, use secure random session IDs"
+        },
+        {
+            "attack": "SSL/TLS Vulnerabilities",
+            "objective": "Intercept encrypted communications or exploit weak cryptographic implementations",
+            "identification": "Check for SSLv2/SSLv3 usage, weak ciphers, certificate validation issues, or protocol downgrade attacks",
+            "mitigation": "Use TLS 1.2 or higher, disable weak ciphers, implement HSTS headers, regular certificate renewal, use strong key sizes"
+        },
+        {
+            "attack": "Security Misconfiguration",
+            "objective": "Exploit improperly configured security settings, default credentials, or exposed sensitive information",
+            "identification": "Check for default passwords, unnecessary services running, verbose error messages, directory listings, exposed configuration files",
+            "mitigation": "Regular security audits, remove default accounts, disable unnecessary features, use minimal privilege principle, implement proper error handling"
+        },
+        {
+            "attack": "Outdated Software",
+            "objective": "Exploit known vulnerabilities in unpatched software, libraries, or frameworks",
+            "identification": "Check software versions against CVE databases, monitor for known vulnerable components, scan for outdated libraries",
+            "mitigation": "Regular patch management, dependency scanning, use vulnerability management tools, implement automated updates where possible"
+        }
     ]
     return render_template("learning.html", topics=topics)
 
@@ -183,10 +233,13 @@ def download_report():
 
     pdf_bytes = generate_report_pdf(report)
     if not pdf_bytes:
-        flash("PDF export requires fpdf (pip install fpdf).", "danger")
+        flash("PDF export requires weasyprint (pip install weasyprint). Please install it and try again.", "danger")
         return redirect(url_for("home"))
 
-    filename = f"vapt_{report['attack']}_{report['generated_at'].replace(' ', '_').replace(':','-')}.pdf"
+    # Clean filename
+    timestamp = report['generated_at'].replace(' ', '_').replace(':', '-').replace('.', '-')
+    filename = f"SURAKSHA_VAPT_{report['attack']}_{timestamp}.pdf"
+
     return send_file(BytesIO(pdf_bytes), as_attachment=True, download_name=filename, mimetype="application/pdf")
 
 

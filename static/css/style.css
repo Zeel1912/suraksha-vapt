@@ -21,6 +21,47 @@ body {
     padding: 1rem;
 }
 
+.auth-body {
+    background: radial-gradient(circle at top, rgba(56, 189, 248, 0.16), transparent 25%),
+                radial-gradient(circle at right, rgba(168, 85, 247, 0.12), transparent 20%),
+                linear-gradient(135deg, #0b1120 0%, #141f2f 100%);
+}
+
+.auth-container {
+    max-width: 520px;
+}
+
+.auth-header,
+.learning-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.auth-header .brand-chip {
+    display: inline-block;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.16);
+    color: #bae6fd;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.75rem;
+}
+
+.auth-header h1,
+.learning-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 2.5vw, 3rem);
+    color: #f8fafc;
+}
+
+.auth-subtitle {
+    margin: 0.75rem auto 0;
+    color: #cbd5e1;
+    max-width: 720px;
+    line-height: 1.7;
+}
+
 header.header {
     margin-bottom: 2rem;
     text-align: center;
@@ -367,6 +408,26 @@ input, select {
     border-radius: 8px;
 }
 
+button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #0ea5e9 0%, #9333ea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+}
+
 label {
     display: block;
     margin: 9px 0 4px;
@@ -430,6 +491,104 @@ pre {
 
 .btn-link button {
     min-width: 200px;
+}
+
+.card-intro {
+    color: #cbd5e1;
+    margin-bottom: 1.5rem;
+    line-height: 1.75;
+}
+
+.learning-page .card {
+    border-radius: 24px;
+}
+
+.learning-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.75rem 0;
+    font-size: 0.95rem;
+    color: #e2e8f0;
+}
+
+.learning-table th,
+.learning-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.learning-table th {
+    text-align: left;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+.learning-table tbody tr:hover {
+    background: rgba(56, 189, 248, 0.06);
+}
+
+.attack-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.attack-critical { background: rgba(248, 113, 113, 0.15); color: #fecaca; }
+.attack-high { background: rgba(251, 191, 36, 0.15); color: #fde68a; }
+.attack-medium { background: rgba(56, 189, 248, 0.16); color: #bfdbfe; }
+.attack-low { background: rgba(163, 230, 53, 0.15); color: #dcfce7; }
+
+.workflow-steps {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(71, 85, 105, 0.45);
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-top: 1.75rem;
+}
+
+.workflow-steps h3 {
+    margin-top: 0;
+}
+
+.workflow-steps ol {
+    padding-left: 1.2rem;
+    margin: 1rem 0 0;
+    color: #cbd5e1;
+}
+
+.workflow-steps ol li {
+    margin-bottom: 0.85rem;
+    line-height: 1.7;
+}
+
+.learning-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.learning-header p {
+    max-width: 720px;
+}
+
+@media (max-width: 768px) {
+    .auth-header,
+    .learning-header {
+        text-align: center;
+    }
+
+    .learning-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 .actions { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
